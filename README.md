@@ -13,9 +13,17 @@ Work in progress. Currently implements API methods:
 
 ## Getting started
 
+1. Add a new bot and get your API token
+
+2. Download the service
+
 ```shell
 go get github.com/micro/slack-srv
-slack-srv --api_token=xxxxxx
+```
+
+3. Start the service with your token
+```shell
+slack-srv --api_token=YOUR_API_TOKEN
 ```
 
 Slack server implements the [bot API](https://api.slack.com/bot-users)
