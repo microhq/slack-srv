@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package go.micro.srv.slack;
+
+service Channels {
+	rpc List(ListRequest) returns (ListResponse) {}
+}
+
+message Channel {
+	string id = 1;
+	string name = 2;
+	int64 created = 3;
+	string creator = 4;
+	bool is_archived = 5;
+	bool is_member = 6;
+	bool is_general = 7;
+	int64 num_members = 8;
+	Topic topic = 9;
+	Purpose purpose = 10;	
+	repeated string members = 11;
+	string latest_read = 12;
+	Message latest = 13;
+	int64 unread_count = 14;
+	int64 unread_count_display = 15;
+}
+
+message Topic {
+	string value = 1;
+	string creator = 2;
+	int64 last_set = 3;
+}
+
+message Purpose {
+	string value = 1;
+	string creator = 2;
+	int64 last_set = 3;
+}
+
+message Message {
+	string type = 1;
+	string ts = 2;
+	string user = 3;
+	string text = 4;
+	bool is_starred = 5;
+	bool wibblr = 6;
+}
+
+message ListRequest {
+	int64 exclude_archived = 1;
+}
+
+message ListResponse {
+	bool ok = 1;
+	string error = 2;
+	repeated Channel channels = 3;
+}
+
+message HistoryRequest {
+	string channel = 1;
+	double latest = 2;
+	double oldest = 3;
+	int64 inclusive = 4;
+	int64 count = 5;
+	int64 unreads = 6;
+}
+
+message HistoryResponse {
+	bool ok = 1;
+	string latest = 2;
+	repeated Message messages = 3;
+	bool has_more = 4;
+}
+
+message InfoRequest {
+	string channel = 1;
+}
+
+message InfoResponse {
+	bool ok = 1;
+	Channel channel = 2;
+}
+
+message MarkRequest {
+	string channel = 1;
+	double ts = 2;
+}
+
+message MarkResponse {
+	bool ok = 1;
+}
+
+message SetPurposeRequest {
+	string channel = 1;
+	string purpose = 2;
+}
+
+message SetPurposeResponse {
+	bool ok = 1;
+	string purpose = 2;
+}
+
+message SetTopicRequest {
+	string channel = 1;
+	string topic = 2;
+}
+
+message SetTopicResponse {
+	bool ok = 1;
+	string topic = 2;
+}
