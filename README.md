@@ -13,7 +13,7 @@ Work in progress. Currently implements API methods:
 
 ## Getting started
 
-1. Add a new bot and get your API token
+1. Add a new bot in your Slack Team and get your API token
 
 2. Download the service
 
@@ -26,7 +26,8 @@ go get github.com/micro/slack-srv
 slack-srv --api_token=YOUR_API_TOKEN
 ```
 
-Slack server implements the [bot API](https://api.slack.com/bot-users)
+## The API
+Slack server implements the [bot API](https://api.slack.com/bot-users) as RPC
 
 ```shell
 micro query go.micro.srv.slack Channels.List 
