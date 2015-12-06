@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+service Api {
+	rpc Test(TestRequest) returns (TestResponse) {}
+}
+
+message TestRequest {
+	string error = 1;
+	map<string,string> args = 2;
+}
+
+message TestResponse {
+	bool ok = 1;
+	map<string,string> args = 2;
+	string error = 3;
+}

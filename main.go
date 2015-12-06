@@ -29,6 +29,12 @@ func main() {
 
 	server.Handle(
 		server.NewHandler(
+			new(handler.Api),
+		),
+	)
+
+	server.Handle(
+		server.NewHandler(
 			new(handler.Channels),
 		),
 	)
