@@ -9,6 +9,7 @@ Work in progress. Currently implements API methods:
 - Channels
 - Chat
 - Emoji
+- Groups
 
 ## Getting started
 
