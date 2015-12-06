@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+service Auth {
+	rpc Test(TestRequest) returns (TestResponse) {}
+}
+
+message TestRequest {
+}
+
+message TestResponse {
+	bool ok = 1;
+	string url = 2;
+	string team = 3;
+	string user = 4;
+	string team_id = 5;
+	string user_id = 6;
+}

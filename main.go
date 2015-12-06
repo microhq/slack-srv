@@ -35,6 +35,12 @@ func main() {
 
 	server.Handle(
 		server.NewHandler(
+			new(handler.Auth),
+		),
+	)
+
+	server.Handle(
+		server.NewHandler(
 			new(handler.Channels),
 		),
 	)
