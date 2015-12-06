@@ -17,8 +17,9 @@ message DeleteRequest {
 
 message DeleteResponse {
 	bool ok = 1;
-	string channel = 2;
-	string ts = 3;
+	string error = 2;
+	string channel = 3;
+	string ts = 4;
 }
 
 message PostMessageRequest {
@@ -37,9 +38,10 @@ message PostMessageRequest {
 
 message PostMessageResponse {
 	bool ok = 1;
-	string ts = 2;
-	string channel = 3;
-	Message message = 4;
+	string error = 2;
+	string ts = 3;
+	string channel = 4;
+	Message message = 5;
 }
 
 message UpdateRequest {
@@ -53,7 +55,8 @@ message UpdateRequest {
 
 message UpdateResponse {
 	bool ok = 1;
-	string channel = 2;
-	string ts = 3;
-	string text = 4;
+	string error = 2;
+	string channel = 3;
+	string ts = 4;
+	string text = 5;
 }
