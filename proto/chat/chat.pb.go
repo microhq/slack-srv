@@ -145,20 +145,25 @@ type ChatClient interface {
 }
 
 type chatClient struct {
-	c client.Client
+	c           client.Client
+	serviceName string
 }
 
-func NewChatClient(c client.Client) ChatClient {
+func NewChatClient(serviceName string, c client.Client) ChatClient {
 	if c == nil {
 		c = client.NewClient()
 	}
+	if len(serviceName) == 0 {
+		serviceName = "go.micro.srv.slack"
+	}
 	return &chatClient{
-		c: c,
+		c:           c,
+		serviceName: serviceName,
 	}
 }
 
 func (c *chatClient) Delete(ctx context.Context, in *DeleteRequest) (*DeleteResponse, error) {
-	req := c.c.NewRequest("go.micro.srv.slack", "Chat.Delete", in)
+	req := c.c.NewRequest(c.serviceName, "Chat.Delete", in)
 	out := new(DeleteResponse)
 	err := c.c.Call(ctx, req, out)
 	if err != nil {
@@ -168,7 +173,7 @@ func (c *chatClient) Delete(ctx context.Context, in *DeleteRequest) (*DeleteResp
 }
 
 func (c *chatClient) PostMessage(ctx context.Context, in *PostMessageRequest) (*PostMessageResponse, error) {
-	req := c.c.NewRequest("go.micro.srv.slack", "Chat.PostMessage", in)
+	req := c.c.NewRequest(c.serviceName, "Chat.PostMessage", in)
 	out := new(PostMessageResponse)
 	err := c.c.Call(ctx, req, out)
 	if err != nil {
@@ -178,7 +183,7 @@ func (c *chatClient) PostMessage(ctx context.Context, in *PostMessageRequest) (*
 }
 
 func (c *chatClient) Update(ctx context.Context, in *UpdateRequest) (*UpdateResponse, error) {
-	req := c.c.NewRequest("go.micro.srv.slack", "Chat.Update", in)
+	req := c.c.NewRequest(c.serviceName, "Chat.Update", in)
 	out := new(UpdateResponse)
 	err := c.c.Call(ctx, req, out)
 	if err != nil {
@@ -189,14 +194,14 @@ func (c *chatClient) Update(ctx context.Context, in *UpdateRequest) (*UpdateResp
 
 // Server API for Chat service
 
-type ChatServer interface {
+type ChatHandler interface {
 	Delete(context.Context, *DeleteRequest, *DeleteResponse) error
 	PostMessage(context.Context, *PostMessageRequest, *PostMessageResponse) error
 	Update(context.Context, *UpdateRequest, *UpdateResponse) error
 }
 
-func RegisterChatServer(s server.Server, srv ChatServer) {
-	s.Handle(s.NewHandler(srv))
+func RegisterChatHandler(s server.Server, hdlr ChatHandler) {
+	s.Handle(s.NewHandler(hdlr))
 }
 
 var fileDescriptor0 = []byte{

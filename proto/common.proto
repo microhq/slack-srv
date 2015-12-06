@@ -10,3 +10,15 @@ message Message {
 	bool is_starred = 5;
 	bool wibblr = 6;
 }
+
+message Topic {
+        string value = 1;
+        string creator = 2;
+        int64 last_set = 3;
+}
+
+message Purpose {
+        string value = 1;
+        string creator = 2;
+        int64 last_set = 3;
+}

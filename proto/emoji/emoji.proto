@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package go.micro.srv.slack;
+package go.micro.srv.slack.emoji;
 
 service Emoji {
-	rpc List(EmojiListRequest) returns (EmojiListResponse) {}
+	rpc List(ListRequest) returns (ListResponse) {}
 }
 
-message EmojiListRequest {
+message ListRequest {
 }
 
-message EmojiListResponse {
+message ListResponse {
 	bool ok = 1;
 	string error = 2;	
 	map<string,string> emoji = 3;

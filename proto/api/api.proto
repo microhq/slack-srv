@@ -1,17 +1,17 @@
 syntax = "proto3";
 
-package go.micro.srv.slack;
+package go.micro.srv.slack.api;
 
 service Api {
-	rpc Test(ApiTestRequest) returns (ApiTestResponse) {}
+	rpc Test(TestRequest) returns (TestResponse) {}
 }
 
-message ApiTestRequest {
+message TestRequest {
 	string error = 1;
 	map<string,string> args = 2;
 }
 
-message ApiTestResponse {
+message TestResponse {
 	bool ok = 1;
 	map<string,string> args = 2;
 	string error = 3;

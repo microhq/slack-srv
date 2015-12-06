@@ -1,44 +1,45 @@
 syntax = "proto3";
 
-package go.micro.srv.slack;
+package go.micro.srv.slack.group;
 
 import "github.com/micro/slack-srv/proto/common.proto";
 
-service Channels {
+service Groups {
+	rpc Close(CloseRequest) returns (CloseResponse) {}
 	rpc History(HistoryRequest) returns (HistoryResponse) {}
 	rpc Info(InfoRequest) returns (InfoResponse) {}
 	rpc List(ListRequest) returns (ListResponse) {}
 	rpc Mark(MarkRequest) returns (MarkResponse) {}
+	rpc Open(OpenRequest) returns (OpenResponse) {}
 	rpc SetPurpose(SetPurposeRequest) returns (SetPurposeResponse) {}
 	rpc SetTopic(SetTopicRequest) returns (SetTopicResponse) {}
 }
 
-message Channel {
+message Group {
 	string id = 1;
 	string name = 2;
-	int64 created = 3;
-	string creator = 4;
-	bool is_archived = 5;
-	bool is_member = 6;
-	bool is_general = 7;
-	int64 num_members = 8;
-	Topic topic = 9;
-	Purpose purpose = 10;	
-	repeated string members = 11;
-	string latest_read = 12;
-	Message latest = 13;
-	int64 unread_count = 14;
-	int64 unread_count_display = 15;
+	string is_group = 3;
+	int64 created = 4;
+	int64 creator = 5;
+	bool is_archived = 6;
+	repeated string members = 7;
+	Topic topic = 8;
+	Purpose purpose = 9;
+	string latest_read = 10;
+	Message latest = 11;
+	int64 unread_count = 12;
+	int64 unread_count_display = 13;
 }
 
-message ListRequest {
-	int64 exclude_archived = 1;
+message CloseRequest {
+	string channel = 1;
 }
 
-message ListResponse {
+message CloseResponse {
 	bool ok = 1;
 	string error = 2;
-	repeated Channel channels = 3;
+	bool no_op = 3;
+	bool already_closed = 4;
 }
 
 message HistoryRequest {
@@ -65,7 +66,17 @@ message InfoRequest {
 message InfoResponse {
 	bool ok = 1;
 	string error = 2;
-	Channel channel = 3;
+	Group group = 3;
+}
+
+message ListRequest {
+	int64 exclude_archived = 1;
+}
+
+message ListResponse {
+	bool ok = 1;
+	string error = 2;
+	repeated Group groups = 3;
 }
 
 message MarkRequest {
@@ -76,6 +87,17 @@ message MarkRequest {
 message MarkResponse {
 	bool ok = 1;
 	string error = 2;
+}
+
+message OpenRequest {
+	string channel = 1;
+}
+
+message OpenResponse {
+	bool ok = 1;
+	string error = 2;
+	bool no_op = 3;
+	bool already_open = 4;
 }
 
 message SetPurposeRequest {

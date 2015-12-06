@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package go.micro.srv.slack;
+package go.micro.srv.slack.auth;
 
 service Auth {
-	rpc Test(AuthTestRequest) returns (AuthTestResponse) {}
+	rpc Test(TestRequest) returns (TestResponse) {}
 }
 
-message AuthTestRequest {
+message TestRequest {
 }
 
-message AuthTestResponse {
+message TestResponse {
 	bool ok = 1;
 	string error = 2;	
 	string url = 3;
