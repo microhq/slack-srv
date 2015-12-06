@@ -12,7 +12,7 @@ import (
 
 type Api struct{}
 
-func (c *Api) Test(ctx context.Context, req *api.TestRequest, rsp *api.TestResponse) error {
+func (c *Api) Test(ctx context.Context, req *api.ApiTestRequest, rsp *api.ApiTestResponse) error {
 	vals := url.Values{}
 	if len(req.Error) > 0 {
 		vals.Set("error", req.Error)

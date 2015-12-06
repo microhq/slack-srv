@@ -5,15 +5,15 @@ import (
 	"net/url"
 
 	"github.com/micro/go-micro/errors"
-	auth "github.com/micro/slack-srv/proto/auth"
+	emoji "github.com/micro/slack-srv/proto/emoji"
 	"github.com/micro/slack-srv/slack"
 	"golang.org/x/net/context"
 )
 
-type Auth struct{}
+type Emoji struct{}
 
-func (c *Auth) Test(ctx context.Context, req *auth.AuthTestRequest, rsp *auth.AuthTestResponse) error {
-	b, err := slack.Do("auth.test", url.Values{})
+func (c *Emoji) List(ctx context.Context, req *emoji.EmojiListRequest, rsp *emoji.EmojiListResponse) error {
+	b, err := slack.Do("emoji.list", url.Values{})
 	if err != nil {
 		return errors.InternalServerError("go.micro.srv.slack", err.Error())
 	}
