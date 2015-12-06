@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package go.micro.srv.slack.im;
+
+import "github.com/micro/slack-srv/proto/common.proto";
+
+service IM {
+	rpc Close(CloseRequest) returns (CloseResponse) {}
+	rpc History(HistoryRequest) returns (HistoryResponse) {}
+	rpc List(ListRequest) returns (ListResponse) {}
+	rpc Mark(MarkRequest) returns (MarkResponse) {}
+	rpc Open(OpenRequest) returns (OpenResponse) {}
+}
+
+message Im {
+	string id = 1;
+	bool is_im = 2;
+	string user = 3;
+	int64 created = 4;
+	bool is_user_deleted = 5;
+}
+
+message Channel {
+	string id = 1;
+}
+
+message CloseRequest {
+	string channel = 1;
+}
+
+message CloseResponse {
+	bool ok = 1;
+	string error = 2;
+	bool no_op = 3;
+	bool already_closed = 4;
+}
+
+message HistoryRequest {
+	string channel = 1;
+	double latest = 2;
+	double oldest = 3;
+	int64 inclusive = 4;
+	int64 count = 5;
+	int64 unreads = 6;
+}
+
+message HistoryResponse {
+	bool ok = 1;
+	string error = 2;
+	string latest = 3;
+	repeated Message messages= 4;
+	bool has_more = 5;
+}
+
+message ListRequest {
+
+}
+
+message ListResponse {
+	bool ok = 1;
+	string error = 2;
+	repeated Im ims = 3;
+}
+
+message MarkRequest {
+	string channel = 1;
+	double ts = 2;
+}
+
+message MarkResponse {
+	bool ok = 1;
+	string error = 2;
+}
+
+message OpenRequest {
+	string user = 1;
+}
+
+message OpenResponse {
+	bool ok = 1;
+	string error = 2;
+	Channel channel = 3;
+	bool no_op = 4;
+	bool already_open = 5;	
+}

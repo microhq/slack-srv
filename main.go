@@ -63,6 +63,12 @@ func main() {
 		),
 	)
 
+	server.Handle(
+		server.NewHandler(
+			new(handler.IM),
+		),
+	)
+
 	if err := server.Run(); err != nil {
 		log.Fatal(err)
 	}
