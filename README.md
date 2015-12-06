@@ -8,6 +8,7 @@ Work in progress. Currently implements API methods:
 - Auth
 - Channels
 - Chat
+- Emoji
 
 ## Getting started
 
