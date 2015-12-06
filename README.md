@@ -1,4 +1,4 @@
-# Slack Server
+# Slack Server ![Slack](https://github.com/micro/slack-srv/blob/master/slack.jpg)
 
 Slack server is slackbot developed as a go-micro service.
 
