@@ -4,9 +4,10 @@ Slack server is slackbot developed as a go-micro service.
 
 Work in progress. Currently implements API methods:
 
+- Api
+- Auth
 - Channels
 - Chat
-- Api
 
 ## Getting started
 
