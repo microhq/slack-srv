@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package go.micro.srv.slack;
+
+import "github.com/micro/slack-srv/proto/common.proto";
+
+service Chat {
+	rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+	rpc PostMessage(PostMessageRequest) returns (PostMessageResponse) {}
+	rpc Update(UpdateRequest) returns (UpdateResponse) {}
+}
+
+message DeleteRequest {
+	double ts = 1;
+	string channel = 2;
+}
+
+message DeleteResponse {
+	bool ok = 1;
+	string channel = 2;
+	string ts = 3;
+}
+
+message PostMessageRequest {
+	string channel = 1;
+	string text = 2;
+	string username = 3;
+	bool as_user = 4;
+	string parse = 5;
+	int64 link_names = 6;
+	string attachments = 7;
+	bool unfurl_links = 8;
+	bool unfurl_media = 9;
+	string icon_url = 10;
+	string icon_emoji = 11;
+}
+
+message PostMessageResponse {
+	bool ok = 1;
+	string ts = 2;
+	string channel = 3;
+	Message message = 4;
+}
+
+message UpdateRequest {
+	double ts = 1;
+	string channel = 2;
+	string text = 3;
+	string attachments = 4;
+	string parse = 5;
+	int64 link_names = 6;
+}
+
+message UpdateResponse {
+	bool ok = 1;
+	string channel = 2;
+	string ts = 3;
+	string text = 4;
+}

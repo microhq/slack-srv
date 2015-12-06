@@ -2,8 +2,15 @@ syntax = "proto3";
 
 package go.micro.srv.slack;
 
+import "github.com/micro/slack-srv/proto/common.proto";
+
 service Channels {
+	rpc History(HistoryRequest) returns (HistoryResponse) {}
+	rpc Info(InfoRequest) returns (InfoResponse) {}
 	rpc List(ListRequest) returns (ListResponse) {}
+	rpc Mark(MarkRequest) returns (MarkResponse) {}
+	rpc SetPurpose(SetPurposeRequest) returns (SetPurposeResponse) {}
+	rpc SetTopic(SetTopicRequest) returns (SetTopicResponse) {}
 }
 
 message Channel {
@@ -34,15 +41,6 @@ message Purpose {
 	string value = 1;
 	string creator = 2;
 	int64 last_set = 3;
-}
-
-message Message {
-	string type = 1;
-	string ts = 2;
-	string user = 3;
-	string text = 4;
-	bool is_starred = 5;
-	bool wibblr = 6;
 }
 
 message ListRequest {

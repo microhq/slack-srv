@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package go.micro.srv.slack;
+
+message Message {
+	string type = 1;
+	string ts = 2;
+	string user = 3;
+	string text = 4;
+	bool is_starred = 5;
+	bool wibblr = 6;
+}
