@@ -19,16 +19,21 @@ Incomplete (Someone please PR this)
 
 ## Getting started
 
-1. Add a new bot in your Slack Team and get your API token
+1. Install Consul
+Consul is the default discovery mechanism for go-micro apps. It's however pluggable.
+[https://www.consul.io/intro/getting-started/install.html](https://www.consul.io/intro/getting-started/install.html)
 
-2. Download the service
+2. Run Consul
+```
+$ consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul
+```
+
+3. Add a new bot in your Slack Team and get your API token
+
+4. Download and start the service
 
 ```shell
 go get github.com/micro/slack-srv
-```
-
-3. Start the service with your token
-```shell
 slack-srv --api_token=YOUR_API_TOKEN
 ```
 
