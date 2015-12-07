@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package go.micro.srv.slack.reactions;
+
+import "github.com/micro/slack-srv/proto/common.proto";
+
+service Reactions {
+	rpc Add(AddRequest) returns (AddResponse) {}
+	rpc Get(GetRequest) returns (GetResponse) {}
+	rpc List(ListRequest) returns (ListResponse) {}
+	rpc Remove(RemoveRequest) returns (RemoveResponse) {}
+}
+
+message Reaction {
+	string name = 1;
+	int64 count = 2;
+	repeated string users = 3;
+}
+
+message Message {
+	slack.Message message = 1;
+	repeated Reaction reactions = 2;
+}
+
+message File {
+	string id = 1;
+	int64 created = 2;
+	int64 timestamp = 3;
+	// todo the rest
+}
+
+message Item {
+	string type = 1;
+	string channel = 2;
+	File file = 3;
+	File file_comment = 4;
+	Message message = 5;
+	repeated Reaction reactions = 6;
+}
+
+message AddRequest {
+	string name = 1;
+	string file = 2;
+	string file_comment = 3;
+	string channel = 4;
+	double timestamp = 5;
+}
+
+message AddResponse {
+	bool ok = 1;
+	string error = 2;
+}
+
+message GetRequest {
+	string file = 1;
+	string file_comment = 2;
+	string channel = 3;
+	double timestamp = 4;
+	bool full = 5;
+}
+
+message GetResponse {
+	bool ok = 1;
+	string error = 2;
+	string type = 3;
+	string channel = 4;
+	Message message = 5;
+}
+
+message ListRequest {
+	string user = 1;
+	bool full = 2;
+	int64 count = 3;
+	int64 page = 4;
+}
+
+message ListResponse {
+	bool ok = 1;
+	string error = 2;
+	repeated Item items = 3;
+}
+
+message RemoveRequest {
+	string name = 1;
+	string file = 2;
+	string file_comment = 3;
+	string channel = 4;
+	double timestamp = 5;
+}
+
+message RemoveResponse {
+	bool ok = 1;
+	string error = 2;
+}
+

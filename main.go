@@ -69,6 +69,12 @@ func main() {
 		),
 	)
 
+	server.Handle(
+		server.NewHandler(
+			new(handler.Reactions),
+		),
+	)
+
 	if err := server.Run(); err != nil {
 		log.Fatal(err)
 	}

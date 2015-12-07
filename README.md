@@ -10,6 +10,7 @@ Work in progress. Currently implements API methods:
 - Chat
 - Emoji
 - Groups
+- Reactions
 
 ## Getting started
 
