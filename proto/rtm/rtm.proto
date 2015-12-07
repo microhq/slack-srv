@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package go.micro.srv.slack.rtm;
+
+service Rtm {
+	rpc Start(StartRequest) returns (StartResponse) {}
+}
+
+message StartRequest {
+	bool simple_latest = 1;
+	bool no_unreads = 2;
+	bool mpim_aware = 3;
+}
+
+message StartResponse {
+	bool ok = 1;
+	string error = 2;	
+	// TODO: complete this implementation https://api.slack.com/methods/rtm.start
+}

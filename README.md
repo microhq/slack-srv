@@ -13,7 +13,7 @@ Implements bot API methods:
 - Reactions
 - Users
 
-Not implemented (Someone please PR this)
+Incomplete (Someone please PR this)
 
 - Rtm
 

@@ -87,6 +87,12 @@ func main() {
 		),
 	)
 
+	server.Handle(
+		server.NewHandler(
+			new(handler.Rtm),
+		),
+	)
+
 	if err := server.Run(); err != nil {
 		log.Fatal(err)
 	}
