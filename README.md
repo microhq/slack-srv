@@ -2,7 +2,7 @@
 
 Slack server is slackbot developed as a go-micro service.
 
-Work in progress. Currently implements API methods:
+Implements bot API methods:
 
 - Api
 - Auth
@@ -11,6 +11,11 @@ Work in progress. Currently implements API methods:
 - Emoji
 - Groups
 - Reactions
+- Users
+
+Not implemented (Someone please PR this)
+
+- Rtm
 
 ## Getting started
 

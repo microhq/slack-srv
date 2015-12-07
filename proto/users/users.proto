@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package go.micro.srv.slack.users;
+
+service Users {
+	rpc GetPresence(GetPresenceRequest) returns (GetPresenceResponse) {}
+	rpc SetPresence(SetPresenceRequest) returns (SetPresenceResponse) {}
+	rpc Info(InfoRequest) returns (InfoResponse) {}
+	rpc List(ListRequest) returns (ListResponse) {}
+}
+
+message Profile {
+	string first_name = 1;
+	string last_name = 2;
+	string real_name = 3;
+	string email = 4;
+	string skype = 5;
+	string phone = 6;
+	string image_24 = 7;
+	string image_32 = 8;
+	string image_48 = 9;
+	string image_72 = 10;
+	string image_192 = 11;
+}
+
+message User {
+	string id = 1;
+	string name = 2;
+	bool deleted = 3;
+	string color = 4;
+	Profile profile = 5;
+	bool is_admin = 6;
+	bool is_owner = 7;
+	bool has_2fa = 8;
+	bool has_files = 9;
+}
+
+message GetPresenceRequest {
+	string user = 1;
+}
+
+message GetPresenceResponse {
+	bool ok = 1;
+	string error = 2;
+	string presence = 3;
+	bool online = 4;
+	bool auto_away = 5;
+	bool manual_away = 6;
+	int64 connection_count = 7;
+	int64 last_activity = 8;
+}
+
+message SetPresenceRequest {
+	string presence = 1;
+}
+
+message SetPresenceResponse {
+	bool ok = 1;
+	string error = 2;
+}
+
+message InfoRequest {
+	string user = 1;
+}
+
+message InfoResponse {
+	bool ok = 1;
+	string error = 2;
+	User user = 3;
+}
+
+message ListRequest {
+	int64 presence = 1;
+}
+
+message ListResponse {
+	bool ok = 1;
+	string error = 2;
+	repeated User members = 3;
+}

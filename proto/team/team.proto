@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package go.micro.srv.slack.team;
+
+service Team {
+	rpc Info(InfoRequest) returns (InfoResponse) {}
+}
+
+message Icon {
+	string image_34 = 1;
+	string image_44 = 2;
+	string image_68 = 3;
+	string image_88 = 4;
+	string image_102 = 5;
+	string image_132 = 6;
+	bool image_default = 7;
+}
+
+message TeamInfo {
+	string id = 1;
+	string name = 2;
+	string domaine = 3;
+	string email_domain = 4;
+	Icon icon = 5;
+}
+
+message InfoRequest {
+}
+
+message InfoResponse {
+	bool ok = 1;
+	string error = 2;
+	TeamInfo team = 3;
+}

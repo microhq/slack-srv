@@ -75,6 +75,18 @@ func main() {
 		),
 	)
 
+	server.Handle(
+		server.NewHandler(
+			new(handler.Team),
+		),
+	)
+
+	server.Handle(
+		server.NewHandler(
+			new(handler.Users),
+		),
+	)
+
 	if err := server.Run(); err != nil {
 		log.Fatal(err)
 	}
