@@ -32,6 +32,12 @@ go get github.com/micro/slack-srv
 slack-srv --api_token=YOUR_API_TOKEN
 ```
 
+OR as a docker container
+
+```shell
+docker run microhq/slack-srv --api_token=YOUR_API_TOKEN --registry_address=YOUR_REGISTRY_ADDRESS
+```
+
 ## The API
 Slack server implements the [bot API](https://api.slack.com/bot-users) as RPC
 
