@@ -1,98 +1,55 @@
 package main
 
 import (
-	"github.com/codegangsta/cli"
 	log "github.com/golang/glog"
-	"github.com/micro/go-micro/cmd"
-	"github.com/micro/go-micro/server"
+	"github.com/micro/cli"
+	micro "github.com/micro/go-micro"
 	"github.com/micro/slack-srv/handler"
 	"github.com/micro/slack-srv/slack"
+
+	// protos
+
+	api "github.com/micro/slack-srv/proto/api"
+	auth "github.com/micro/slack-srv/proto/auth"
+	channels "github.com/micro/slack-srv/proto/channels"
+	chat "github.com/micro/slack-srv/proto/chat"
+	emoji "github.com/micro/slack-srv/proto/emoji"
+	groups "github.com/micro/slack-srv/proto/groups"
+	im "github.com/micro/slack-srv/proto/im"
+	reactions "github.com/micro/slack-srv/proto/reactions"
+	rtm "github.com/micro/slack-srv/proto/rtm"
+	team "github.com/micro/slack-srv/proto/team"
+	users "github.com/micro/slack-srv/proto/users"
 )
 
 func main() {
-	cmd.Flags = append(cmd.Flags, cli.StringFlag{
-		Name:   "api_token",
-		EnvVar: "API_TOKEN",
-		Usage:  "Slack api token",
-	})
-
-	cmd.Actions = append(cmd.Actions, func(c *cli.Context) {
-		slack.Token = c.String("api_token")
-	})
-
-	cmd.Init()
-
-	server.Init(
-		server.Name("go.micro.srv.slack"),
+	service := micro.NewService(
+		micro.Name("go.micro.srv.slack"),
+		micro.Flags(cli.StringFlag{
+			Name:   "api_token",
+			EnvVar: "API_TOKEN",
+			Usage:  "Slack api token",
+		}),
+		micro.Action(func(c *cli.Context) {
+			slack.Token = c.String("api_token")
+		}),
 	)
 
-	server.Handle(
-		server.NewHandler(
-			new(handler.Api),
-		),
-	)
+	service.Init()
 
-	server.Handle(
-		server.NewHandler(
-			new(handler.Auth),
-		),
-	)
+	api.RegisterApiHandler(service.Server(), new(handler.Api))
+	auth.RegisterAuthHandler(service.Server(), new(handler.Auth))
+	channels.RegisterChannelsHandler(service.Server(), new(handler.Channels))
+	chat.RegisterChatHandler(service.Server(), new(handler.Chat))
+	emoji.RegisterEmojiHandler(service.Server(), new(handler.Emoji))
+	groups.RegisterGroupsHandler(service.Server(), new(handler.Groups))
+	im.RegisterIMHandler(service.Server(), new(handler.IM))
+	reactions.RegisterReactionsHandler(service.Server(), new(handler.Reactions))
+	rtm.RegisterRtmHandler(service.Server(), new(handler.Rtm))
+	team.RegisterTeamHandler(service.Server(), new(handler.Team))
+	users.RegisterUsersHandler(service.Server(), new(handler.Users))
 
-	server.Handle(
-		server.NewHandler(
-			new(handler.Channels),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Chat),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Emoji),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Groups),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.IM),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Reactions),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Team),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Users),
-		),
-	)
-
-	server.Handle(
-		server.NewHandler(
-			new(handler.Rtm),
-		),
-	)
-
-	if err := server.Run(); err != nil {
+	if err := service.Run(); err != nil {
 		log.Fatal(err)
 	}
 }
