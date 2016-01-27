@@ -29,6 +29,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type TestRequest struct {
 }
 
@@ -65,7 +69,7 @@ var _ server.Option
 // Client API for Auth service
 
 type AuthClient interface {
-	Test(ctx context.Context, in *TestRequest) (*TestResponse, error)
+	Test(ctx context.Context, in *TestRequest, opts ...client.CallOption) (*TestResponse, error)
 }
 
 type authClient struct {
@@ -86,10 +90,10 @@ func NewAuthClient(serviceName string, c client.Client) AuthClient {
 	}
 }
 
-func (c *authClient) Test(ctx context.Context, in *TestRequest) (*TestResponse, error) {
+func (c *authClient) Test(ctx context.Context, in *TestRequest, opts ...client.CallOption) (*TestResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Auth.Test", in)
 	out := new(TestResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +107,15 @@ type AuthHandler interface {
 }
 
 func RegisterAuthHandler(s server.Server, hdlr AuthHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Auth{hdlr}))
+}
+
+type Auth struct {
+	AuthHandler
+}
+
+func (h *Auth) Test(ctx context.Context, in *TestRequest, out *TestResponse) error {
+	return h.AuthHandler.Test(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

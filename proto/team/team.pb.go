@@ -31,6 +31,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Icon struct {
 	Image_34     string `protobuf:"bytes,1,opt,name=image_34" json:"image_34,omitempty"`
 	Image_44     string `protobuf:"bytes,2,opt,name=image_44" json:"image_44,omitempty"`
@@ -107,7 +111,7 @@ var _ server.Option
 // Client API for Team service
 
 type TeamClient interface {
-	Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error)
+	Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error)
 }
 
 type teamClient struct {
@@ -128,10 +132,10 @@ func NewTeamClient(serviceName string, c client.Client) TeamClient {
 	}
 }
 
-func (c *teamClient) Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error) {
+func (c *teamClient) Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Team.Info", in)
 	out := new(InfoResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +149,15 @@ type TeamHandler interface {
 }
 
 func RegisterTeamHandler(s server.Server, hdlr TeamHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Team{hdlr}))
+}
+
+type Team struct {
+	TeamHandler
+}
+
+func (h *Team) Info(ctx context.Context, in *InfoRequest, out *InfoResponse) error {
+	return h.TeamHandler.Info(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

@@ -37,6 +37,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Profile struct {
 	FirstName string `protobuf:"bytes,1,opt,name=first_name" json:"first_name,omitempty"`
 	LastName  string `protobuf:"bytes,2,opt,name=last_name" json:"last_name,omitempty"`
@@ -199,10 +203,10 @@ var _ server.Option
 // Client API for Users service
 
 type UsersClient interface {
-	GetPresence(ctx context.Context, in *GetPresenceRequest) (*GetPresenceResponse, error)
-	SetPresence(ctx context.Context, in *SetPresenceRequest) (*SetPresenceResponse, error)
-	Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error)
-	List(ctx context.Context, in *ListRequest) (*ListResponse, error)
+	GetPresence(ctx context.Context, in *GetPresenceRequest, opts ...client.CallOption) (*GetPresenceResponse, error)
+	SetPresence(ctx context.Context, in *SetPresenceRequest, opts ...client.CallOption) (*SetPresenceResponse, error)
+	Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error)
 }
 
 type usersClient struct {
@@ -223,40 +227,40 @@ func NewUsersClient(serviceName string, c client.Client) UsersClient {
 	}
 }
 
-func (c *usersClient) GetPresence(ctx context.Context, in *GetPresenceRequest) (*GetPresenceResponse, error) {
+func (c *usersClient) GetPresence(ctx context.Context, in *GetPresenceRequest, opts ...client.CallOption) (*GetPresenceResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Users.GetPresence", in)
 	out := new(GetPresenceResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) SetPresence(ctx context.Context, in *SetPresenceRequest) (*SetPresenceResponse, error) {
+func (c *usersClient) SetPresence(ctx context.Context, in *SetPresenceRequest, opts ...client.CallOption) (*SetPresenceResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Users.SetPresence", in)
 	out := new(SetPresenceResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error) {
+func (c *usersClient) Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Users.Info", in)
 	out := new(InfoResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) List(ctx context.Context, in *ListRequest) (*ListResponse, error) {
+func (c *usersClient) List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Users.List", in)
 	out := new(ListResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -273,7 +277,27 @@ type UsersHandler interface {
 }
 
 func RegisterUsersHandler(s server.Server, hdlr UsersHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Users{hdlr}))
+}
+
+type Users struct {
+	UsersHandler
+}
+
+func (h *Users) GetPresence(ctx context.Context, in *GetPresenceRequest, out *GetPresenceResponse) error {
+	return h.UsersHandler.GetPresence(ctx, in, out)
+}
+
+func (h *Users) SetPresence(ctx context.Context, in *SetPresenceRequest, out *SetPresenceResponse) error {
+	return h.UsersHandler.SetPresence(ctx, in, out)
+}
+
+func (h *Users) Info(ctx context.Context, in *InfoRequest, out *InfoResponse) error {
+	return h.UsersHandler.Info(ctx, in, out)
+}
+
+func (h *Users) List(ctx context.Context, in *ListRequest, out *ListResponse) error {
+	return h.UsersHandler.List(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

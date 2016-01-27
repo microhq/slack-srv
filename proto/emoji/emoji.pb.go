@@ -29,6 +29,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type ListRequest struct {
 }
 
@@ -68,7 +72,7 @@ var _ server.Option
 // Client API for Emoji service
 
 type EmojiClient interface {
-	List(ctx context.Context, in *ListRequest) (*ListResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error)
 }
 
 type emojiClient struct {
@@ -89,10 +93,10 @@ func NewEmojiClient(serviceName string, c client.Client) EmojiClient {
 	}
 }
 
-func (c *emojiClient) List(ctx context.Context, in *ListRequest) (*ListResponse, error) {
+func (c *emojiClient) List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Emoji.List", in)
 	out := new(ListResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +110,15 @@ type EmojiHandler interface {
 }
 
 func RegisterEmojiHandler(s server.Server, hdlr EmojiHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Emoji{hdlr}))
+}
+
+type Emoji struct {
+	EmojiHandler
+}
+
+func (h *Emoji) List(ctx context.Context, in *ListRequest, out *ListResponse) error {
+	return h.EmojiHandler.List(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

@@ -29,6 +29,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type TestRequest struct {
 	Error string            `protobuf:"bytes,1,opt,name=error" json:"error,omitempty"`
 	Args  map[string]string `protobuf:"bytes,2,rep,name=args" json:"args,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
@@ -77,7 +81,7 @@ var _ server.Option
 // Client API for Api service
 
 type ApiClient interface {
-	Test(ctx context.Context, in *TestRequest) (*TestResponse, error)
+	Test(ctx context.Context, in *TestRequest, opts ...client.CallOption) (*TestResponse, error)
 }
 
 type apiClient struct {
@@ -98,10 +102,10 @@ func NewApiClient(serviceName string, c client.Client) ApiClient {
 	}
 }
 
-func (c *apiClient) Test(ctx context.Context, in *TestRequest) (*TestResponse, error) {
+func (c *apiClient) Test(ctx context.Context, in *TestRequest, opts ...client.CallOption) (*TestResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Api.Test", in)
 	out := new(TestResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +119,15 @@ type ApiHandler interface {
 }
 
 func RegisterApiHandler(s server.Server, hdlr ApiHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Api{hdlr}))
+}
+
+type Api struct {
+	ApiHandler
+}
+
+func (h *Api) Test(ctx context.Context, in *TestRequest, out *TestResponse) error {
+	return h.ApiHandler.Test(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

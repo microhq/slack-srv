@@ -45,6 +45,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Group struct {
 	Id                 string                      `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
 	Name               string                      `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
@@ -307,14 +311,14 @@ var _ server.Option
 // Client API for Groups service
 
 type GroupsClient interface {
-	Close(ctx context.Context, in *CloseRequest) (*CloseResponse, error)
-	History(ctx context.Context, in *HistoryRequest) (*HistoryResponse, error)
-	Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error)
-	List(ctx context.Context, in *ListRequest) (*ListResponse, error)
-	Mark(ctx context.Context, in *MarkRequest) (*MarkResponse, error)
-	Open(ctx context.Context, in *OpenRequest) (*OpenResponse, error)
-	SetPurpose(ctx context.Context, in *SetPurposeRequest) (*SetPurposeResponse, error)
-	SetTopic(ctx context.Context, in *SetTopicRequest) (*SetTopicResponse, error)
+	Close(ctx context.Context, in *CloseRequest, opts ...client.CallOption) (*CloseResponse, error)
+	History(ctx context.Context, in *HistoryRequest, opts ...client.CallOption) (*HistoryResponse, error)
+	Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error)
+	Mark(ctx context.Context, in *MarkRequest, opts ...client.CallOption) (*MarkResponse, error)
+	Open(ctx context.Context, in *OpenRequest, opts ...client.CallOption) (*OpenResponse, error)
+	SetPurpose(ctx context.Context, in *SetPurposeRequest, opts ...client.CallOption) (*SetPurposeResponse, error)
+	SetTopic(ctx context.Context, in *SetTopicRequest, opts ...client.CallOption) (*SetTopicResponse, error)
 }
 
 type groupsClient struct {
@@ -335,80 +339,80 @@ func NewGroupsClient(serviceName string, c client.Client) GroupsClient {
 	}
 }
 
-func (c *groupsClient) Close(ctx context.Context, in *CloseRequest) (*CloseResponse, error) {
+func (c *groupsClient) Close(ctx context.Context, in *CloseRequest, opts ...client.CallOption) (*CloseResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.Close", in)
 	out := new(CloseResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) History(ctx context.Context, in *HistoryRequest) (*HistoryResponse, error) {
+func (c *groupsClient) History(ctx context.Context, in *HistoryRequest, opts ...client.CallOption) (*HistoryResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.History", in)
 	out := new(HistoryResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error) {
+func (c *groupsClient) Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.Info", in)
 	out := new(InfoResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) List(ctx context.Context, in *ListRequest) (*ListResponse, error) {
+func (c *groupsClient) List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.List", in)
 	out := new(ListResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) Mark(ctx context.Context, in *MarkRequest) (*MarkResponse, error) {
+func (c *groupsClient) Mark(ctx context.Context, in *MarkRequest, opts ...client.CallOption) (*MarkResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.Mark", in)
 	out := new(MarkResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) Open(ctx context.Context, in *OpenRequest) (*OpenResponse, error) {
+func (c *groupsClient) Open(ctx context.Context, in *OpenRequest, opts ...client.CallOption) (*OpenResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.Open", in)
 	out := new(OpenResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) SetPurpose(ctx context.Context, in *SetPurposeRequest) (*SetPurposeResponse, error) {
+func (c *groupsClient) SetPurpose(ctx context.Context, in *SetPurposeRequest, opts ...client.CallOption) (*SetPurposeResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.SetPurpose", in)
 	out := new(SetPurposeResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *groupsClient) SetTopic(ctx context.Context, in *SetTopicRequest) (*SetTopicResponse, error) {
+func (c *groupsClient) SetTopic(ctx context.Context, in *SetTopicRequest, opts ...client.CallOption) (*SetTopicResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Groups.SetTopic", in)
 	out := new(SetTopicResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -429,7 +433,43 @@ type GroupsHandler interface {
 }
 
 func RegisterGroupsHandler(s server.Server, hdlr GroupsHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Groups{hdlr}))
+}
+
+type Groups struct {
+	GroupsHandler
+}
+
+func (h *Groups) Close(ctx context.Context, in *CloseRequest, out *CloseResponse) error {
+	return h.GroupsHandler.Close(ctx, in, out)
+}
+
+func (h *Groups) History(ctx context.Context, in *HistoryRequest, out *HistoryResponse) error {
+	return h.GroupsHandler.History(ctx, in, out)
+}
+
+func (h *Groups) Info(ctx context.Context, in *InfoRequest, out *InfoResponse) error {
+	return h.GroupsHandler.Info(ctx, in, out)
+}
+
+func (h *Groups) List(ctx context.Context, in *ListRequest, out *ListResponse) error {
+	return h.GroupsHandler.List(ctx, in, out)
+}
+
+func (h *Groups) Mark(ctx context.Context, in *MarkRequest, out *MarkResponse) error {
+	return h.GroupsHandler.Mark(ctx, in, out)
+}
+
+func (h *Groups) Open(ctx context.Context, in *OpenRequest, out *OpenResponse) error {
+	return h.GroupsHandler.Open(ctx, in, out)
+}
+
+func (h *Groups) SetPurpose(ctx context.Context, in *SetPurposeRequest, out *SetPurposeResponse) error {
+	return h.GroupsHandler.SetPurpose(ctx, in, out)
+}
+
+func (h *Groups) SetTopic(ctx context.Context, in *SetTopicRequest, out *SetTopicResponse) error {
+	return h.GroupsHandler.SetTopic(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

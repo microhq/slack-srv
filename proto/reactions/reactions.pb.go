@@ -40,6 +40,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Reaction struct {
 	Name  string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 	Count int64    `protobuf:"varint,2,opt,name=count" json:"count,omitempty"`
@@ -260,10 +264,10 @@ var _ server.Option
 // Client API for Reactions service
 
 type ReactionsClient interface {
-	Add(ctx context.Context, in *AddRequest) (*AddResponse, error)
-	Get(ctx context.Context, in *GetRequest) (*GetResponse, error)
-	List(ctx context.Context, in *ListRequest) (*ListResponse, error)
-	Remove(ctx context.Context, in *RemoveRequest) (*RemoveResponse, error)
+	Add(ctx context.Context, in *AddRequest, opts ...client.CallOption) (*AddResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...client.CallOption) (*GetResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error)
+	Remove(ctx context.Context, in *RemoveRequest, opts ...client.CallOption) (*RemoveResponse, error)
 }
 
 type reactionsClient struct {
@@ -284,40 +288,40 @@ func NewReactionsClient(serviceName string, c client.Client) ReactionsClient {
 	}
 }
 
-func (c *reactionsClient) Add(ctx context.Context, in *AddRequest) (*AddResponse, error) {
+func (c *reactionsClient) Add(ctx context.Context, in *AddRequest, opts ...client.CallOption) (*AddResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Reactions.Add", in)
 	out := new(AddResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *reactionsClient) Get(ctx context.Context, in *GetRequest) (*GetResponse, error) {
+func (c *reactionsClient) Get(ctx context.Context, in *GetRequest, opts ...client.CallOption) (*GetResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Reactions.Get", in)
 	out := new(GetResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *reactionsClient) List(ctx context.Context, in *ListRequest) (*ListResponse, error) {
+func (c *reactionsClient) List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Reactions.List", in)
 	out := new(ListResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *reactionsClient) Remove(ctx context.Context, in *RemoveRequest) (*RemoveResponse, error) {
+func (c *reactionsClient) Remove(ctx context.Context, in *RemoveRequest, opts ...client.CallOption) (*RemoveResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Reactions.Remove", in)
 	out := new(RemoveResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +338,27 @@ type ReactionsHandler interface {
 }
 
 func RegisterReactionsHandler(s server.Server, hdlr ReactionsHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Reactions{hdlr}))
+}
+
+type Reactions struct {
+	ReactionsHandler
+}
+
+func (h *Reactions) Add(ctx context.Context, in *AddRequest, out *AddResponse) error {
+	return h.ReactionsHandler.Add(ctx, in, out)
+}
+
+func (h *Reactions) Get(ctx context.Context, in *GetRequest, out *GetResponse) error {
+	return h.ReactionsHandler.Get(ctx, in, out)
+}
+
+func (h *Reactions) List(ctx context.Context, in *ListRequest, out *ListResponse) error {
+	return h.ReactionsHandler.List(ctx, in, out)
+}
+
+func (h *Reactions) Remove(ctx context.Context, in *RemoveRequest, out *RemoveResponse) error {
+	return h.ReactionsHandler.Remove(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

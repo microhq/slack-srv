@@ -41,6 +41,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Channel struct {
 	Id                 string                       `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
 	Name               string                       `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
@@ -259,12 +263,12 @@ var _ server.Option
 // Client API for Channels service
 
 type ChannelsClient interface {
-	History(ctx context.Context, in *HistoryRequest) (*HistoryResponse, error)
-	Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error)
-	List(ctx context.Context, in *ListRequest) (*ListResponse, error)
-	Mark(ctx context.Context, in *MarkRequest) (*MarkResponse, error)
-	SetPurpose(ctx context.Context, in *SetPurposeRequest) (*SetPurposeResponse, error)
-	SetTopic(ctx context.Context, in *SetTopicRequest) (*SetTopicResponse, error)
+	History(ctx context.Context, in *HistoryRequest, opts ...client.CallOption) (*HistoryResponse, error)
+	Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error)
+	Mark(ctx context.Context, in *MarkRequest, opts ...client.CallOption) (*MarkResponse, error)
+	SetPurpose(ctx context.Context, in *SetPurposeRequest, opts ...client.CallOption) (*SetPurposeResponse, error)
+	SetTopic(ctx context.Context, in *SetTopicRequest, opts ...client.CallOption) (*SetTopicResponse, error)
 }
 
 type channelsClient struct {
@@ -285,60 +289,60 @@ func NewChannelsClient(serviceName string, c client.Client) ChannelsClient {
 	}
 }
 
-func (c *channelsClient) History(ctx context.Context, in *HistoryRequest) (*HistoryResponse, error) {
+func (c *channelsClient) History(ctx context.Context, in *HistoryRequest, opts ...client.CallOption) (*HistoryResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Channels.History", in)
 	out := new(HistoryResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *channelsClient) Info(ctx context.Context, in *InfoRequest) (*InfoResponse, error) {
+func (c *channelsClient) Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Channels.Info", in)
 	out := new(InfoResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *channelsClient) List(ctx context.Context, in *ListRequest) (*ListResponse, error) {
+func (c *channelsClient) List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Channels.List", in)
 	out := new(ListResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *channelsClient) Mark(ctx context.Context, in *MarkRequest) (*MarkResponse, error) {
+func (c *channelsClient) Mark(ctx context.Context, in *MarkRequest, opts ...client.CallOption) (*MarkResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Channels.Mark", in)
 	out := new(MarkResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *channelsClient) SetPurpose(ctx context.Context, in *SetPurposeRequest) (*SetPurposeResponse, error) {
+func (c *channelsClient) SetPurpose(ctx context.Context, in *SetPurposeRequest, opts ...client.CallOption) (*SetPurposeResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Channels.SetPurpose", in)
 	out := new(SetPurposeResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *channelsClient) SetTopic(ctx context.Context, in *SetTopicRequest) (*SetTopicResponse, error) {
+func (c *channelsClient) SetTopic(ctx context.Context, in *SetTopicRequest, opts ...client.CallOption) (*SetTopicResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Channels.SetTopic", in)
 	out := new(SetTopicResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +361,35 @@ type ChannelsHandler interface {
 }
 
 func RegisterChannelsHandler(s server.Server, hdlr ChannelsHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Channels{hdlr}))
+}
+
+type Channels struct {
+	ChannelsHandler
+}
+
+func (h *Channels) History(ctx context.Context, in *HistoryRequest, out *HistoryResponse) error {
+	return h.ChannelsHandler.History(ctx, in, out)
+}
+
+func (h *Channels) Info(ctx context.Context, in *InfoRequest, out *InfoResponse) error {
+	return h.ChannelsHandler.Info(ctx, in, out)
+}
+
+func (h *Channels) List(ctx context.Context, in *ListRequest, out *ListResponse) error {
+	return h.ChannelsHandler.List(ctx, in, out)
+}
+
+func (h *Channels) Mark(ctx context.Context, in *MarkRequest, out *MarkResponse) error {
+	return h.ChannelsHandler.Mark(ctx, in, out)
+}
+
+func (h *Channels) SetPurpose(ctx context.Context, in *SetPurposeRequest, out *SetPurposeResponse) error {
+	return h.ChannelsHandler.SetPurpose(ctx, in, out)
+}
+
+func (h *Channels) SetTopic(ctx context.Context, in *SetTopicRequest, out *SetTopicResponse) error {
+	return h.ChannelsHandler.SetTopic(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

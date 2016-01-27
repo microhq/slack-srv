@@ -40,6 +40,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Im struct {
 	Id            string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
 	IsIm          bool   `protobuf:"varint,2,opt,name=is_im" json:"is_im,omitempty"`
@@ -215,11 +219,11 @@ var _ server.Option
 // Client API for IM service
 
 type IMClient interface {
-	Close(ctx context.Context, in *CloseRequest) (*CloseResponse, error)
-	History(ctx context.Context, in *HistoryRequest) (*HistoryResponse, error)
-	List(ctx context.Context, in *ListRequest) (*ListResponse, error)
-	Mark(ctx context.Context, in *MarkRequest) (*MarkResponse, error)
-	Open(ctx context.Context, in *OpenRequest) (*OpenResponse, error)
+	Close(ctx context.Context, in *CloseRequest, opts ...client.CallOption) (*CloseResponse, error)
+	History(ctx context.Context, in *HistoryRequest, opts ...client.CallOption) (*HistoryResponse, error)
+	List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error)
+	Mark(ctx context.Context, in *MarkRequest, opts ...client.CallOption) (*MarkResponse, error)
+	Open(ctx context.Context, in *OpenRequest, opts ...client.CallOption) (*OpenResponse, error)
 }
 
 type iMClient struct {
@@ -240,50 +244,50 @@ func NewIMClient(serviceName string, c client.Client) IMClient {
 	}
 }
 
-func (c *iMClient) Close(ctx context.Context, in *CloseRequest) (*CloseResponse, error) {
+func (c *iMClient) Close(ctx context.Context, in *CloseRequest, opts ...client.CallOption) (*CloseResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "IM.Close", in)
 	out := new(CloseResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *iMClient) History(ctx context.Context, in *HistoryRequest) (*HistoryResponse, error) {
+func (c *iMClient) History(ctx context.Context, in *HistoryRequest, opts ...client.CallOption) (*HistoryResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "IM.History", in)
 	out := new(HistoryResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *iMClient) List(ctx context.Context, in *ListRequest) (*ListResponse, error) {
+func (c *iMClient) List(ctx context.Context, in *ListRequest, opts ...client.CallOption) (*ListResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "IM.List", in)
 	out := new(ListResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *iMClient) Mark(ctx context.Context, in *MarkRequest) (*MarkResponse, error) {
+func (c *iMClient) Mark(ctx context.Context, in *MarkRequest, opts ...client.CallOption) (*MarkResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "IM.Mark", in)
 	out := new(MarkResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *iMClient) Open(ctx context.Context, in *OpenRequest) (*OpenResponse, error) {
+func (c *iMClient) Open(ctx context.Context, in *OpenRequest, opts ...client.CallOption) (*OpenResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "IM.Open", in)
 	out := new(OpenResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -301,7 +305,31 @@ type IMHandler interface {
 }
 
 func RegisterIMHandler(s server.Server, hdlr IMHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&IM{hdlr}))
+}
+
+type IM struct {
+	IMHandler
+}
+
+func (h *IM) Close(ctx context.Context, in *CloseRequest, out *CloseResponse) error {
+	return h.IMHandler.Close(ctx, in, out)
+}
+
+func (h *IM) History(ctx context.Context, in *HistoryRequest, out *HistoryResponse) error {
+	return h.IMHandler.History(ctx, in, out)
+}
+
+func (h *IM) List(ctx context.Context, in *ListRequest, out *ListResponse) error {
+	return h.IMHandler.List(ctx, in, out)
+}
+
+func (h *IM) Mark(ctx context.Context, in *MarkRequest, out *MarkResponse) error {
+	return h.IMHandler.Mark(ctx, in, out)
+}
+
+func (h *IM) Open(ctx context.Context, in *OpenRequest, out *OpenResponse) error {
+	return h.IMHandler.Open(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

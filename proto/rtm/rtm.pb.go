@@ -29,6 +29,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type StartRequest struct {
 	SimpleLatest bool `protobuf:"varint,1,opt,name=simple_latest" json:"simple_latest,omitempty"`
 	NoUnreads    bool `protobuf:"varint,2,opt,name=no_unreads" json:"no_unreads,omitempty"`
@@ -63,7 +67,7 @@ var _ server.Option
 // Client API for Rtm service
 
 type RtmClient interface {
-	Start(ctx context.Context, in *StartRequest) (*StartResponse, error)
+	Start(ctx context.Context, in *StartRequest, opts ...client.CallOption) (*StartResponse, error)
 }
 
 type rtmClient struct {
@@ -84,10 +88,10 @@ func NewRtmClient(serviceName string, c client.Client) RtmClient {
 	}
 }
 
-func (c *rtmClient) Start(ctx context.Context, in *StartRequest) (*StartResponse, error) {
+func (c *rtmClient) Start(ctx context.Context, in *StartRequest, opts ...client.CallOption) (*StartResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Rtm.Start", in)
 	out := new(StartResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +105,15 @@ type RtmHandler interface {
 }
 
 func RegisterRtmHandler(s server.Server, hdlr RtmHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Rtm{hdlr}))
+}
+
+type Rtm struct {
+	RtmHandler
+}
+
+func (h *Rtm) Start(ctx context.Context, in *StartRequest, out *StartResponse) error {
+	return h.RtmHandler.Start(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{

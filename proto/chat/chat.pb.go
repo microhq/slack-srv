@@ -34,6 +34,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type DeleteRequest struct {
 	Ts      float64 `protobuf:"fixed64,1,opt,name=ts" json:"ts,omitempty"`
 	Channel string  `protobuf:"bytes,2,opt,name=channel" json:"channel,omitempty"`
@@ -139,9 +143,9 @@ var _ server.Option
 // Client API for Chat service
 
 type ChatClient interface {
-	Delete(ctx context.Context, in *DeleteRequest) (*DeleteResponse, error)
-	PostMessage(ctx context.Context, in *PostMessageRequest) (*PostMessageResponse, error)
-	Update(ctx context.Context, in *UpdateRequest) (*UpdateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...client.CallOption) (*DeleteResponse, error)
+	PostMessage(ctx context.Context, in *PostMessageRequest, opts ...client.CallOption) (*PostMessageResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...client.CallOption) (*UpdateResponse, error)
 }
 
 type chatClient struct {
@@ -162,30 +166,30 @@ func NewChatClient(serviceName string, c client.Client) ChatClient {
 	}
 }
 
-func (c *chatClient) Delete(ctx context.Context, in *DeleteRequest) (*DeleteResponse, error) {
+func (c *chatClient) Delete(ctx context.Context, in *DeleteRequest, opts ...client.CallOption) (*DeleteResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Chat.Delete", in)
 	out := new(DeleteResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *chatClient) PostMessage(ctx context.Context, in *PostMessageRequest) (*PostMessageResponse, error) {
+func (c *chatClient) PostMessage(ctx context.Context, in *PostMessageRequest, opts ...client.CallOption) (*PostMessageResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Chat.PostMessage", in)
 	out := new(PostMessageResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *chatClient) Update(ctx context.Context, in *UpdateRequest) (*UpdateResponse, error) {
+func (c *chatClient) Update(ctx context.Context, in *UpdateRequest, opts ...client.CallOption) (*UpdateResponse, error) {
 	req := c.c.NewRequest(c.serviceName, "Chat.Update", in)
 	out := new(UpdateResponse)
-	err := c.c.Call(ctx, req, out)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +205,23 @@ type ChatHandler interface {
 }
 
 func RegisterChatHandler(s server.Server, hdlr ChatHandler) {
-	s.Handle(s.NewHandler(hdlr))
+	s.Handle(s.NewHandler(&Chat{hdlr}))
+}
+
+type Chat struct {
+	ChatHandler
+}
+
+func (h *Chat) Delete(ctx context.Context, in *DeleteRequest, out *DeleteResponse) error {
+	return h.ChatHandler.Delete(ctx, in, out)
+}
+
+func (h *Chat) PostMessage(ctx context.Context, in *PostMessageRequest, out *PostMessageResponse) error {
+	return h.ChatHandler.PostMessage(ctx, in, out)
+}
+
+func (h *Chat) Update(ctx context.Context, in *UpdateRequest, out *UpdateResponse) error {
+	return h.ChatHandler.Update(ctx, in, out)
 }
 
 var fileDescriptor0 = []byte{
